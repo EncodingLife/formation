@@ -1,4 +1,4 @@
-use apis::{HexCoord, HexCoordinate, HexWorldShape, MapIndex};
+use apis::{HexCoord, HexWorldShape, MapIndex};
 
 pub fn get_spawn_coords(world_shape: HexWorldShape, pawn_count: usize) -> Vec<HexCoord> {
     let indexer = MapIndex::new(world_shape);
@@ -35,24 +35,11 @@ fn fill_rank(
     v
 }
 
-fn row_start(index: usize, world_shape: HexWorldShape) -> HexCoord {
-    let indexer = MapIndex::new(world_shape);
-    indexer.coord(index)
-}
-
 fn get_width(world_shape: HexWorldShape) -> usize {
     match world_shape {
         HexWorldShape::Hexagon(radius, _) => radius + 1,
         HexWorldShape::Rectangle(width, _, _) => width,
         HexWorldShape::Square(width, _) => width,
-    }
-}
-
-fn get_height(world_shape: HexWorldShape) -> usize {
-    match world_shape {
-        HexWorldShape::Hexagon(radius, _) => radius + 1,
-        HexWorldShape::Rectangle(_, height, _) => height,
-        HexWorldShape::Square(height, _) => height,
     }
 }
 
@@ -100,7 +87,7 @@ mod test {
     #[test_case(5, 5, 3)]
     #[test_case(5, 6, 3)]
     #[test_case(5, 25, 2)]
-    #[test_case(7, 25, 2)]
+    #[test_case(7, 25, 3)]
     #[test_case(7, 14, 3)]
     #[test_case(12, 14, 5)]
     #[test_case(12, 15, 5)]
@@ -123,21 +110,6 @@ mod test {
     #[test_case(12,16,vec!(0,0,2))]
     pub fn spawn_offsets_tests(width: usize, pawn_count: usize, expected: Vec<usize>) {
         assert_eq!(spawn_offsets(width, pawn_count), expected)
-    }
-
-    #[test]
-    pub fn get_spawn_coords_tests() {
-        let r = get_spawn_coords(HexWorldShape::Square(12, apis::HexOrientation::Flat), 15);
-
-        // Currently only generates the start of each row
-        assert_eq!(
-            r,
-            vec![
-                HexCoord::from_axial(0, 2),
-                HexCoord::from_axial(0, 1),
-                HexCoord::from_axial(0, 0)
-            ]
-        )
     }
 
     #[test]

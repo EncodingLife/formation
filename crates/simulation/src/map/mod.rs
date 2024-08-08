@@ -1,2 +1,2 @@
-mod pawn;
-pub mod spawn_info;
+pub mod pawn;
+pub mod spawning;

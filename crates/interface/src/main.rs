@@ -6,7 +6,7 @@ use bevy::{
     sprite::MaterialMesh2dBundle,
 };
 use bevy_pancam::{PanCam, PanCamPlugin};
-use simulation::map::spawn_info::get_spawn_coords;
+use simulation::{map::{pawn::PawnMap, spawning::get_spawn_coords}, player::Player};
 
 const CELL_SIZE: f32 = 64.0;
 
@@ -32,7 +32,7 @@ fn setup(
     let mesh_shape = Hexagon::new(orientation, CELL_SIZE - 1.0);
 
     let mesh_handle = meshes.add(mesh_shape);
-    let circle_mesh = meshes.add(Circle::new(16.0));
+    let circle_mesh = meshes.add(Circle::new(32.0));
 
     for i in 0..indexer.capacity() {
         let coords = indexer.coord(i);
@@ -47,29 +47,23 @@ fn setup(
         });
     }
 
-    for coords in get_spawn_coords(world_shape, 10) {
-        {
-            let translation = world.coord_to_world_v3(coords);
-            let colour: Color = PURPLE.into();
-            let material: Handle<ColorMaterial> = materials.add(ColorMaterial::from(colour));
-            commands.spawn(MaterialMesh2dBundle {
-                mesh: circle_mesh.clone().into(),
-                material: material.clone(),
-                transform: Transform::from_translation(translation.with_z(1.0)),
-                ..Default::default()
-            });
+    let map = PawnMap::new(world, 12, Player::empty(0), Player::empty(1));
+    for (c, p) in map.coord_iter() {
+        match p {
+            Some(&pp) => {
+                let translation = world.coord_to_world_v3(c);
+                let team_colour = pp.team.match_team.colour();
+                let colour: Color = Color::linear_rgb(team_colour.0.into(), team_colour.1.into(), team_colour.2.into());
+                let material: Handle<ColorMaterial> = materials.add(ColorMaterial::from(colour));
+                commands.spawn(MaterialMesh2dBundle {
+                    mesh: circle_mesh.clone().into(),
+                    material: material.clone(),
+                    transform: Transform::from_translation(translation.with_z(1.0)),
+                    ..Default::default()
+                });
+            },
+            None => {},
         }
-        let reflection = (coords - world.center()).reflect_q() + world.center();
-        {
-            let translation = world.coord_to_world_v3(reflection);
-            let colour: Color = GREEN.into();
-            let material: Handle<ColorMaterial> = materials.add(ColorMaterial::from(colour));
-            commands.spawn(MaterialMesh2dBundle {
-                mesh: circle_mesh.clone().into(),
-                material: material.clone(),
-                transform: Transform::from_translation(translation.with_z(1.0)),
-                ..Default::default()
-            });
-        }
+
     }
 }
