@@ -81,6 +81,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f26201604c87b1e01bd3d98f8d5d9a8fcbb815e8cedb41ffccbeb4bf593a35fe"
 
 [[package]]
+name = "agent"
+version = "0.1.0"
+
+[[package]]
 name = "ahash"
 version = "0.8.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -175,6 +179,7 @@ dependencies = [
 name = "apis"
 version = "0.1.0"
 dependencies = [
+ "bevy",
  "glam 0.25.0",
  "log",
 ]
@@ -757,6 +762,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "24a1ad15685c6035e01bdc9d5ea082558ef1438e9d40d69fc552857dd7e83e71"
 dependencies = [
  "glam 0.27.0",
+]
+
+[[package]]
+name = "bevy_pancam"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "535bb673b986f9aa1b2087b14a375ad55307151386d2f52f803acbe62eaff492"
+dependencies = [
+ "bevy",
 ]
 
 [[package]]
@@ -1774,6 +1788,9 @@ name = "formation"
 version = "0.1.0"
 dependencies = [
  "apis",
+ "bevy",
+ "simulation",
+ "test-case",
 ]
 
 [[package]]
@@ -2140,7 +2157,10 @@ dependencies = [
 name = "interface"
 version = "0.1.0"
 dependencies = [
+ "apis",
  "bevy",
+ "bevy_pancam",
+ "simulation",
 ]
 
 [[package]]
@@ -3268,7 +3288,9 @@ checksum = "d66dc143e6b11c1eddc06d5c423cfc97062865baf299914ab64caa38182078fe"
 name = "simulation"
 version = "0.1.0"
 dependencies = [
+ "agent",
  "apis",
+ "test-case",
 ]
 
 [[package]]
@@ -3381,6 +3403,39 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "06794f8f6c5c898b3275aebefa6b8a1cb24cd2c6c79397ab15774837a0bc5755"
 dependencies = [
  "winapi-util",
+]
+
+[[package]]
+name = "test-case"
+version = "3.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eb2550dd13afcd286853192af8601920d959b14c401fcece38071d53bf0768a8"
+dependencies = [
+ "test-case-macros",
+]
+
+[[package]]
+name = "test-case-core"
+version = "3.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "adcb7fd841cd518e279be3d5a3eb0636409487998a4aff22f3de87b81e88384f"
+dependencies = [
+ "cfg-if",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.72",
+]
+
+[[package]]
+name = "test-case-macros"
+version = "3.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5c89e72a01ed4c579669add59014b9a524d609c0c88c6a585ce37485879f6ffb"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.72",
+ "test-case-core",
 ]
 
 [[package]]

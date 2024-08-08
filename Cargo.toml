@@ -4,7 +4,12 @@ version = "0.1.0"
 edition = "2021"
 
 [workspace]
-members = [ "crates/interface","crates/simulation"]
+members = [ "crates/agent", "crates/interface","crates/simulation"]
 
 [dependencies]
 apis = { version = "*", path="../apis" }
+simulation = { path = "crates/simulation" }
+bevy = "0.14.0"
+
+[dev-dependencies]
+test-case = "*"

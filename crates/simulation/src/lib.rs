@@ -1,4 +1,3 @@
 mod pawns;
-mod map;
-mod agent;
+pub mod map;
 mod player;
